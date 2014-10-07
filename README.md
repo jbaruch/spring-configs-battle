@@ -1,6 +1,4 @@
-spring-configs-battle
-=====================
+spring-configs-battle 
+=================================================
 
-Code for Spring Configs Battle talks.
-
-Checkout branches for confenrece specific instances.
+[JavaDay Kiev 2014 edition](http://javaday.org.ua/)
