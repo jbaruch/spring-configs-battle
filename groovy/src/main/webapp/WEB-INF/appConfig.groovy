@@ -1,6 +1,11 @@
+import org.springframework.beans.factory.FactoryBean
+import spring.battle.groovy.ClusterStub
 import spring.battle.groovy.ImportController
 import spring.battle.groovy.JsonParser
 import spring.battle.groovy.XmlParser
+
+import static spring.battle.groovy.ClusterStub.Builder.PoolingOptions.Options.LOCAL
+import static spring.battle.groovy.ClusterStub.DowngradingConsistencyRetryPolicy.INSTANCE
 
 beans {
 
@@ -10,27 +15,28 @@ beans {
     jsonParser JsonParser
     xmlParser XmlParser
 
-    importController ImportController, xmlParser
+    cluster ClusterFactoryBean
 
-//    service(ServiceImpl) {
-//        repository = ref('repository')
-//    }
-//
-//
-//    repository(RepositoryImpl){
-//        text = '${test.text}'
-//    }
-//
-//    //namespace example
-//    xmlns task: 'http://www.springframework.org/schema/task'
-//    task.'scheduled-tasks'(scheduler: 'myScheduler') {
-//        task.scheduled(ref: 'service', method: 'printPeriodically', 'fixed-delay': 500)
-//    }
-//
-//    task.scheduler(id:'myScheduler', 'pool-size':10)
-//
-//    //props configurer example
-//    props(PropertyPlaceholderConfigurer){
-//        location = 'test.properties'
-//    }
+    importController ImportController, xmlParser, cluster
+}
+
+class ClusterFactoryBean implements FactoryBean<ClusterStub> {
+
+    @Override
+    ClusterStub getObject() throws Exception {
+        ClusterStub.builder().addContactPoint("some-node")
+                .poolingOptions().setCoreConnectionsPerHost(LOCAL, 43).withRetryPolicy(INSTANCE)
+                .withReconnectionPolicy(new ClusterStub.Builder.ConstantReconnectionPolicy(100L))
+                .build()
+    }
+
+    @Override
+    Class<?> getObjectType() {
+        ClusterStub
+    }
+
+    @Override
+    boolean isSingleton() {
+        true
+    }
 }

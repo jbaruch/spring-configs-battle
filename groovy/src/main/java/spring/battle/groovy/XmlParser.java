@@ -18,6 +18,6 @@ public class XmlParser implements Parser {
 
     @Override
     public Map<String, String> map(String data) throws IOException {
-        return xmlParser.readValue(data, Map.class);
+        return map(xmlParser, data);
     }
 }

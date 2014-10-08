@@ -19,6 +19,6 @@ public class JsonParser implements Parser {
 
     @Override
     public Map<String, String> map(String data) throws IOException {
-        return mapper.readValue(data, Map.class);
+        return map(mapper, data);
     }
 }

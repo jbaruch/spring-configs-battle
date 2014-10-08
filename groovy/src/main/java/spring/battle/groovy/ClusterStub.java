@@ -1,14 +1,20 @@
 package spring.battle.groovy;
 
+import java.util.Map;
+
 /**
  * @author jbaruch
  * @since 10/8/14
  */
 public class ClusterStub {
 
+    public String save(Map<String, String> map) {
+        return "Saved " + (map.size() - 1) + " entries, which were parsed by " + map.get(Parser.PARSER_NAME_KEY);
+    }
+
     public static enum DowngradingConsistencyRetryPolicy {INSTANCE}
 
-    public Builder builder() {
+    public static Builder builder() {
         return new Builder();
     }
 
@@ -31,19 +37,21 @@ public class ClusterStub {
         }
 
         public Builder.PoolingOptions poolingOptions() {
-            return new PoolingOptions();
+            return new PoolingOptions(this);
         }
 
         public static class PoolingOptions {
 
-            public static enum Options {LOCAL}
+            private Builder builder;
 
-            public void setCoreConnectionsPerHost(Options option, int value) {
-
+            public PoolingOptions(Builder builder) {
+                this.builder = builder;
             }
 
-            public int getMaxConnectionsPerHost(Options option) {
-                return 100;
+            public static enum Options {LOCAL}
+
+            public Builder setCoreConnectionsPerHost(Options option, int value) {
+                return builder;
             }
         }
 
