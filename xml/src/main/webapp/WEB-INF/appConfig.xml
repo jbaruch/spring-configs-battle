@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <mvc:annotation-driven/>
+
+    <bean id="jsonParser" class="spring.battle.xml.JsonParser"/>
+    <bean id="xmlParser" class="spring.battle.xml.XmlParser"/>
+    <bean id="cluster" class="spring.battle.xml.ClusterFactoryBean"/>
+    <bean id="importController" class="spring.battle.xml.ImportController">
+        <constructor-arg name="cluster" ref="cluster"/>
+        <constructor-arg name="parser" ref="xmlParser"/>
+    </bean>
+</beans>
