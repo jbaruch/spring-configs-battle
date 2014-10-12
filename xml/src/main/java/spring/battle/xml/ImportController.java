@@ -16,9 +16,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class ImportController {
 
     private Parser parser;
-    private ClusterStub cluster;
+    private Cluster cluster;
 
-    public ImportController(Parser parser, ClusterStub cluster) {
+    public ImportController(Parser parser, Cluster cluster) {
         this.parser = parser;
         this.cluster = cluster;
     }
