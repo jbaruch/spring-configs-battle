@@ -9,7 +9,7 @@ import java.util.Map;
  * @author jbaruch
  * @since 10/8/14
  */
-public class JsonParser implements Parser {
+public class JsonParser extends ParserBase {
 
     private ObjectMapper mapper;
 
@@ -18,7 +18,11 @@ public class JsonParser implements Parser {
     }
 
     @Override
-    public Map<String, String> map(String data) throws IOException {
-        return map(mapper, data);
+    public Map<String, String> map(String data) {
+        try {
+            return map(mapper, data);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -10,6 +10,7 @@ import static spring.battle.groovy.Cluster.DowngradingConsistencyRetryPolicy.INS
 beans {
 
     xmlns([mvc: 'http://www.springframework.org/schema/mvc'])
+    xmlns([aop: 'http://www.springframework.org/schema/aop'])
     mvc.'annotation-driven'()
 
     jsonParser JsonParser

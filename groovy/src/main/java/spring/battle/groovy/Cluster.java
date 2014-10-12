@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 
 /**
- * Stub for Cassandra Cluster
  * @author jbaruch
  * @since 10/8/14
  */

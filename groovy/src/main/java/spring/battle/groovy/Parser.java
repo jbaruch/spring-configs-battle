@@ -1,8 +1,5 @@
 package spring.battle.groovy;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -13,16 +10,9 @@ public interface Parser {
 
     String PARSER_NAME_KEY = "parser.name";
 
-    Map<String, String> map(String data) throws IOException;
+    Map<String, String> map(String data);
 
-    @SuppressWarnings("unchecked")
-    default Map<String, String> map(ObjectMapper mapper, String data) throws IOException {
-        Map map = mapper.readValue(data, Map.class);
-        if (map != null) {
-            map.put(PARSER_NAME_KEY, this.getClass().getSimpleName());
-        }
-        return map;
-    }
+    void create();
 
-
+    void close();
 }
