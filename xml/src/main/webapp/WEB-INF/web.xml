@@ -15,7 +15,7 @@
         </init-param>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/appConfig.xml</param-value>
+            <param-value>file:appConfig.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
