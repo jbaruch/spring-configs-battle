@@ -9,7 +9,7 @@ import java.util.Map;
  * @author jbaruch
  * @since 10/8/14
  */
-public class XmlParser implements Parser {
+public class XmlParser extends ParserBase {
     private XmlMapper xmlParser;
 
     public XmlParser() {
@@ -17,7 +17,11 @@ public class XmlParser implements Parser {
     }
 
     @Override
-    public Map<String, String> map(String data) throws IOException {
-        return map(xmlParser, data);
+    public Map<String, String> map(String data) {
+        try {
+            return map(xmlParser, data);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
