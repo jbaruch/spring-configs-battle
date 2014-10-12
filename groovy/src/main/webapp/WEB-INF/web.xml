@@ -15,7 +15,7 @@
         </init-param>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/appConfig.groovy</param-value>
+            <param-value>file:appConfig.groovy</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
