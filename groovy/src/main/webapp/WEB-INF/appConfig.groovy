@@ -1,11 +1,11 @@
 import org.springframework.beans.factory.FactoryBean
-import spring.battle.groovy.ClusterStub
+import spring.battle.groovy.Cluster
 import spring.battle.groovy.ImportController
 import spring.battle.groovy.JsonParser
 import spring.battle.groovy.XmlParser
 
-import static spring.battle.groovy.ClusterStub.Builder.PoolingOptions.Options.LOCAL
-import static spring.battle.groovy.ClusterStub.DowngradingConsistencyRetryPolicy.INSTANCE
+import static spring.battle.groovy.Cluster.Builder.PoolingOptions.Options.LOCAL
+import static spring.battle.groovy.Cluster.DowngradingConsistencyRetryPolicy.INSTANCE
 
 beans {
 
@@ -20,19 +20,19 @@ beans {
     importController ImportController, xmlParser, cluster
 }
 
-class ClusterFactoryBean implements FactoryBean<ClusterStub> {
+class ClusterFactoryBean implements FactoryBean<Cluster> {
 
     @Override
-    ClusterStub getObject() throws Exception {
-        ClusterStub.builder().addContactPoint("some-node")
+    Cluster getObject() throws Exception {
+        Cluster.builder().addContactPoint("some-node")
                 .poolingOptions().setCoreConnectionsPerHost(LOCAL, 43).withRetryPolicy(INSTANCE)
-                .withReconnectionPolicy(new ClusterStub.Builder.ConstantReconnectionPolicy(100L))
+                .withReconnectionPolicy(new Cluster.Builder.ConstantReconnectionPolicy(100L))
                 .build()
     }
 
     @Override
     Class<?> getObjectType() {
-        ClusterStub
+        Cluster
     }
 
     @Override

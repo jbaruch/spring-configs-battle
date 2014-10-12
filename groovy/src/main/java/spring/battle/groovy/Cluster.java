@@ -6,7 +6,7 @@ import java.util.Map;
  * @author jbaruch
  * @since 10/8/14
  */
-public class ClusterStub {
+public class Cluster {
 
     public String save(Map<String, String> map) {
         return "Saved " + (map.size() - 1) + " entries, which were parsed by " + map.get(Parser.PARSER_NAME_KEY);
@@ -32,8 +32,8 @@ public class ClusterStub {
             return this;
         }
 
-        public ClusterStub build() {
-            return new ClusterStub();
+        public Cluster build() {
+            return new Cluster();
         }
 
         public Builder.PoolingOptions poolingOptions() {
