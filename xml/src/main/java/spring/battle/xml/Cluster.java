@@ -15,6 +15,7 @@ public class Cluster {
 
     public String save(Map<String, String> map) {
         LOG.info("saving " + map);
+
         return "Saved " + (map.size() - 1) + " entries, which were parsed by " + map.get(Parser.PARSER_NAME_KEY);
     }
 

@@ -1,5 +1,8 @@
 package spring.battle.groovy;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Map;
 
 /**
@@ -9,7 +12,11 @@ import java.util.Map;
  */
 public class Cluster {
 
+    private static Logger LOG = LoggerFactory.getLogger(Cluster.class);
+
     public String save(Map<String, String> map) {
+        LOG.info("saving " + map);
+
         return "Saved " + (map.size() - 1) + " entries, which were parsed by " + map.get(Parser.PARSER_NAME_KEY);
     }
 
