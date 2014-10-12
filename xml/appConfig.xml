@@ -10,7 +10,7 @@
     <mvc:annotation-driven/>
 
     <bean id="jsonParser" class="spring.battle.xml.JsonParser"/>
-    <bean id="xmlParser" class="spring.battle.xml.XmlParser" scope="request"/>
+    <bean id="xmlParser" class="spring.battle.xml.XmlParser"/>
     <bean id="cluster" class="spring.battle.xml.ClusterFactoryBean"/>
     <bean id="importController" class="spring.battle.xml.ImportController">
         <constructor-arg name="cluster" ref="cluster"/>
