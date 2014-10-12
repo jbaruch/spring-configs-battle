@@ -3,6 +3,7 @@ package spring.battle.groovy;
 import java.util.Map;
 
 /**
+ * Stub for Cassandra Cluster
  * @author jbaruch
  * @since 10/8/14
  */
