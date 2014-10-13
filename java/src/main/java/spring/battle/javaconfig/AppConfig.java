@@ -1,6 +1,5 @@
 package spring.battle.javaconfig;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -21,12 +20,12 @@ import static spring.battle.javaconfig.Cluster.DowngradingConsistencyRetryPolicy
 @PropertySource("file:cassandra.properties")
 public class AppConfig {
 
+    @Value("${contactPoint}") String contactPoint;
+    @Value("${connectionsPerHost}") int connectionsPerHost;
+    @Value("${reconnectionPolicy}") long reconnectionPolicy;
 
     @Bean
-    @Autowired
-    public Cluster cluster(@Value("${contactPoint}") String contactPoint,
-                           @Value("${connectionsPerHost}") int connectionsPerHost,
-                           @Value("${reconnectionPolicy}") long reconnectionPolicy) {
+    public Cluster cluster() {
         return Cluster.builder().addContactPoint(contactPoint)
                 .poolingOptions().setCoreConnectionsPerHost(LOCAL, connectionsPerHost).withRetryPolicy(INSTANCE)
                 .withReconnectionPolicy(new Cluster.Builder.ConstantReconnectionPolicy(reconnectionPolicy))
