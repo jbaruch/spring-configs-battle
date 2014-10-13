@@ -28,6 +28,7 @@ public class Cluster {
     public static class Builder {
 
         public Builder addContactPoint(String contactPoint) {
+            LOG.info("Contact point set to " + contactPoint);
             return this;
         }
 
@@ -58,12 +59,14 @@ public class Cluster {
             public static enum Options {LOCAL}
 
             public Builder setCoreConnectionsPerHost(Options option, int value) {
+                LOG.info("ConnectionsPerHost set to " + value);
                 return builder;
             }
         }
 
         public static class ConstantReconnectionPolicy {
             public ConstantReconnectionPolicy(long timeout) {
+                LOG.info("RecconectionPolicy set to " + timeout);
             }
         }
     }
