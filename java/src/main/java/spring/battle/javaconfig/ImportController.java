@@ -12,8 +12,7 @@ import static java.util.stream.Collectors.toList;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
- * @author jbaruch
- * @since 10/8/14
+ * Created by Jeka on 13/10/2014.
  */
 @RestController
 public class ImportController {

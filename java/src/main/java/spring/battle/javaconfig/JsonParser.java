@@ -6,8 +6,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * @author jbaruch
- * @since 10/8/14
+ * Created by Jeka on 13/10/2014.
  */
 public class JsonParser extends ParserBase {
 

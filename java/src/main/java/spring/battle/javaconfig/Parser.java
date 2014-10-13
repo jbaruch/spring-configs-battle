@@ -3,8 +3,7 @@ package spring.battle.javaconfig;
 import java.util.Map;
 
 /**
- * @author jbaruch
- * @since 10/8/14
+ * Created by Jeka on 13/10/2014.
  */
 public interface Parser {
 
