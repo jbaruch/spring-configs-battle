@@ -1,4 +1,6 @@
 import org.springframework.beans.factory.FactoryBean
+import org.springframework.beans.factory.support.LookupOverride
+import org.springframework.beans.factory.support.MethodOverrides
 import spring.battle.groovy.Cluster
 import spring.battle.groovy.ImportController
 import spring.battle.groovy.XmlParser
@@ -16,7 +18,7 @@ beans {
 
     context.'property-placeholder'(location: 'file:cassandra.properties')
 
-    xmlParser XmlParser
+    xmlParser(XmlParser).scope = 'prototype'
 
     cluster (ClusterFactoryBean) {
         contactPoint = '${contactPoint}'
@@ -24,7 +26,10 @@ beans {
         reconnectionPolicy = '${reconnectionPolicy}'
     }
 
-    importController ImportController, xmlParser, cluster
+    importController(ImportController, cluster) { bean ->
+        bean.methodOverrides = new MethodOverrides()
+        bean.methodOverrides.addOverride(new LookupOverride('getParser', 'xmlParser'))
+    }
 }
 
 class ClusterFactoryBean implements FactoryBean<Cluster> {

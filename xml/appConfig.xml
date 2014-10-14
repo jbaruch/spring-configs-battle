@@ -11,7 +11,7 @@
     <mvc:annotation-driven/>
     <context:property-placeholder location="file:cassandra.properties"/>
 
-    <bean id="xmlParser" class="spring.battle.xml.XmlParser"/>
+    <bean id="xmlParser" class="spring.battle.xml.XmlParser" scope="prototype"/>
     <bean id="cluster" class="spring.battle.xml.ClusterFactoryBean">
         <property name="connectionsPerHost" value="${connectionsPerHost}"/>
         <property name="contactPoint" value="${contactPoint}"/>
@@ -19,6 +19,6 @@
     </bean>
     <bean id="importController" class="spring.battle.xml.ImportController">
         <constructor-arg name="cluster" ref="cluster"/>
-        <constructor-arg name="parser" ref="xmlParser"/>
+        <lookup-method name="getParser" bean="xmlParser"/>
     </bean>
 </beans>
