@@ -3,7 +3,7 @@ import org.springframework.beans.factory.support.LookupOverride
 import org.springframework.beans.factory.support.MethodOverrides
 import spring.battle.groovy.Cluster
 import spring.battle.groovy.ImportController
-import spring.battle.groovy.XmlParser
+import spring.battle.groovy.JsonParser
 
 import static spring.battle.groovy.Cluster.Builder.PoolingOptions.Options.LOCAL
 import static spring.battle.groovy.Cluster.DowngradingConsistencyRetryPolicy.INSTANCE
@@ -18,7 +18,7 @@ beans {
 
     context.'property-placeholder'(location: 'file:cassandra.properties')
 
-    xmlParser(XmlParser).scope = 'prototype'
+    parser(JsonParser).scope = 'prototype'
 
     cluster (ClusterFactoryBean) {
         contactPoint = '${contactPoint}'
@@ -28,7 +28,7 @@ beans {
 
     importController(ImportController, cluster) { bean ->
         bean.methodOverrides = new MethodOverrides()
-        bean.methodOverrides.addOverride(new LookupOverride('getParser', 'xmlParser'))
+        bean.methodOverrides.addOverride(new LookupOverride('getParser', 'parser'))
     }
 }
 
