@@ -4,6 +4,7 @@ import org.springframework.beans.factory.support.MethodOverrides
 import spring.battle.groovy.Cluster
 import spring.battle.groovy.ImportController
 import spring.battle.groovy.JsonParser
+import spring.battle.groovy.XmlParser
 
 import static spring.battle.groovy.Cluster.Builder.PoolingOptions.Options.LOCAL
 import static spring.battle.groovy.Cluster.DowngradingConsistencyRetryPolicy.INSTANCE
@@ -18,7 +19,13 @@ beans {
 
     context.'property-placeholder'(location: 'file:cassandra.properties')
 
-    parser(JsonParser).scope = 'prototype'
+    switch (System.getenv('SPRING_PROFILES_ACTIVE')) {
+        case 'MAIN':
+            parser(JsonParser).scope = 'prototype'
+            break
+        case 'FAILOVER':
+            parser(XmlParser).scope = 'prototype'
+    }
 
     cluster (ClusterFactoryBean) {
         contactPoint = '${contactPoint}'

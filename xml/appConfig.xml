@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <mvc:annotation-driven/>
     <context:property-placeholder location="file:cassandra.properties"/>
 
-    <bean id="parser" class="spring.battle.xml.JsonParser" scope="prototype"/>
     <bean id="cluster" class="spring.battle.xml.ClusterFactoryBean">
         <property name="connectionsPerHost" value="${connectionsPerHost}"/>
         <property name="contactPoint" value="${contactPoint}"/>
@@ -21,4 +20,10 @@
         <constructor-arg name="cluster" ref="cluster"/>
         <lookup-method name="getParser" bean="parser"/>
     </bean>
+    <beans profile="MAIN">
+        <bean id="parser" class="spring.battle.xml.JsonParser" scope="prototype"/>
+    </beans>
+    <beans profile="FAILOVER">
+        <bean id="parser" class="spring.battle.xml.XmlParser" scope="prototype"/>
+    </beans>
 </beans>
