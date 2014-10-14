@@ -17,9 +17,9 @@ public class ClusterFactoryBean implements FactoryBean<Cluster> {
 
     @Override
     public Cluster getObject() throws Exception {
-        return Cluster.builder().addContactPoint(getContactPoint())
-                .poolingOptions().setCoreConnectionsPerHost(LOCAL, getConnectionsPerHost()).withRetryPolicy(INSTANCE)
-                .withReconnectionPolicy(new Cluster.Builder.ConstantReconnectionPolicy(getReconnectionPolicy()))
+        return Cluster.builder().addContactPoint(contactPoint)
+                .poolingOptions().setCoreConnectionsPerHost(LOCAL, connectionsPerHost).withRetryPolicy(INSTANCE)
+                .withReconnectionPolicy(new Cluster.Builder.ConstantReconnectionPolicy(reconnectionPolicy))
                 .build();
     }
 
@@ -33,24 +33,12 @@ public class ClusterFactoryBean implements FactoryBean<Cluster> {
         return true;
     }
 
-    public String getContactPoint() {
-        return contactPoint;
-    }
-
     public void setContactPoint(String contactPoint) {
         this.contactPoint = contactPoint;
     }
 
-    public int getConnectionsPerHost() {
-        return connectionsPerHost;
-    }
-
     public void setConnectionsPerHost(int connectionsPerHost) {
         this.connectionsPerHost = connectionsPerHost;
-    }
-
-    public long getReconnectionPolicy() {
-        return reconnectionPolicy;
     }
 
     public void setReconnectionPolicy(long reconnectionPolicy) {
