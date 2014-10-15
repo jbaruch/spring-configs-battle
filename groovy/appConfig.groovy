@@ -12,6 +12,7 @@ beans {
     xmlns([mvc: 'http://www.springframework.org/schema/mvc'])
     xmlns([aop: 'http://www.springframework.org/schema/aop'])
     xmlns([context: 'http://www.springframework.org/schema/context'])
+    xmlns([lang: 'http://www.springframework.org/schema/lang'])
 
     mvc.'annotation-driven'()
 
@@ -22,7 +23,8 @@ beans {
         parserProps.load(is)
     }
 
-    parser(Class.forName("spring.battle.groovy.${parserProps.parserImpl}Parser")).scope = 'prototype'
+    lang.groovy(id: 'parser', 'refresh-check-delay': 1000, scope: 'prototype',
+            'script-source': "file:${parserProps.parserImpl}Parser.groovy")
 
     cluster(ClusterFactoryBean) {
         contactPoint = '${contactPoint}'
