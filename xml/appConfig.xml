@@ -20,10 +20,7 @@
         <constructor-arg name="cluster" ref="cluster"/>
         <lookup-method name="getParser" bean="parser"/>
     </bean>
-    <beans profile="MAIN">
-        <bean id="parser" class="spring.battle.xml.JsonParser" scope="prototype"/>
-    </beans>
-    <beans profile="FAILOVER">
-        <bean id="parser" class="spring.battle.xml.XmlParser" scope="prototype"/>
-    </beans>
+
+    <import resource="${parserImpl}ParserConfig.xml"/>
+
 </beans>
