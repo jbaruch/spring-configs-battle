@@ -1,7 +1,7 @@
 spring-configs-battle
 =================================================
 
-[JavaDay Kiev 2014 edition](http://javaday.org.ua/)
+[SpringOne2GX 2015 edition](https://2015.event.springone2gx.com/schedule/sessions/spring_framework_the_ultimate_configurations_battle.html)
 
 * cd into one of the configuration versions (groovy/java/xml)
 * run with `./gradlew appRun`
