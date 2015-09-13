@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public abstract class ParserBase implements Parser {
 
-    private static enum State {
+    private  enum State {
         NOT_INITIALIZED, OPEN, CLOSED
     }
 

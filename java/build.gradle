@@ -14,6 +14,9 @@ apply plugin: 'org.akhikhl.gretty'
 group = 'spring-battle'
 version = '1.0-SNAPSHOT'
 
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
 repositories {
     jcenter()
 }
@@ -21,12 +24,15 @@ repositories {
 dependencies {
     def springVersion = '4.1.1.RELEASE'
     def jacksonVersion = '2.4.3'
+    def hazelcastVersion = '3.5.2'
     compile 'org.codehaus.groovy:groovy:2.3.7'
     compile "org.springframework:spring-context:$springVersion"
     compile "org.springframework:spring-webmvc:$springVersion"
     compile 'org.codehaus.groovy:groovy:2.3.7'
     compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
     compile "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion"
+    compile "com.hazelcast:hazelcast:$hazelcastVersion"
+
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.7'
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.2'
 }

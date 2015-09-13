@@ -1,10 +1,10 @@
+import com.hazelcast.config.XmlConfigBuilder
+import com.hazelcast.core.Hazelcast
+import com.hazelcast.core.HazelcastInstance
 import org.springframework.beans.factory.FactoryBean
 import spring.battle.groovy.Cluster
 import spring.battle.groovy.ImportController
 import spring.battle.groovy.XmlParser
-
-import static spring.battle.groovy.Cluster.Builder.PoolingOptions.Options.LOCAL
-import static spring.battle.groovy.Cluster.DowngradingConsistencyRetryPolicy.INSTANCE
 
 beans {
 
@@ -14,35 +14,44 @@ beans {
 
     mvc.'annotation-driven'()
 
-    context.'property-placeholder'(location: 'file:cassandra.properties')
-
     xmlParser XmlParser
 
-    cluster (ClusterFactoryBean) {
-        contactPoint = '${contactPoint}'
-        connectionsPerHost = '${connectionsPerHost}'
-        reconnectionPolicy = '${reconnectionPolicy}'
+    hazelcastInstance(HazelcastInstanceFactoryBean) {
+        hazelcastPropertiesFilename = 'hazelcast.properties'
+        hazelcastConfigFilename = 'hazelcast.xml'
+    }
+
+    cluster(Cluster, hazelcastInstance) {bean ->
+        bean.destroyMethod = 'shutdown'
     }
 
     importController ImportController, xmlParser, cluster
 }
 
-class ClusterFactoryBean implements FactoryBean<Cluster> {
-    String contactPoint
-    int connectionsPerHost
-    long reconnectionPolicy
+class HazelcastInstanceFactoryBean implements FactoryBean<HazelcastInstance> {
+    String hazelcastPropertiesFilename
+    String hazelcastConfigFilename
 
     @Override
-    Cluster getObject() throws Exception {
-        Cluster.builder().addContactPoint(contactPoint)
-                .poolingOptions().setCoreConnectionsPerHost(LOCAL, connectionsPerHost).withRetryPolicy(INSTANCE)
-                .withReconnectionPolicy(new Cluster.Builder.ConstantReconnectionPolicy(reconnectionPolicy))
-                .build()
+    HazelcastInstance getObject() throws Exception {
+
+        Properties hzProperties = new Properties()
+        File propertiesFile = new File(hazelcastPropertiesFilename)
+        propertiesFile.withInputStream {
+            hzProperties.load(it)
+        }
+        def instance
+        this.getClass().getResource(hazelcastConfigFilename).withInputStream {
+            XmlConfigBuilder  xmlConfigBuilder = new XmlConfigBuilder(it)
+            xmlConfigBuilder.properties = hzProperties
+            instance = Hazelcast.newHazelcastInstance(xmlConfigBuilder.build())
+        }
+        instance
     }
 
     @Override
     Class<?> getObjectType() {
-        Cluster
+        HazelcastInstance
     }
 
     @Override

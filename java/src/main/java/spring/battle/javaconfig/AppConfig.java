@@ -1,39 +1,55 @@
 package spring.battle.javaconfig;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.hazelcast.config.Config;
+import com.hazelcast.config.XmlConfigBuilder;
+import com.hazelcast.core.Hazelcast;
+import com.hazelcast.core.HazelcastInstance;
+import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import static spring.battle.javaconfig.Cluster.Builder.PoolingOptions.Options.LOCAL;
-import static spring.battle.javaconfig.Cluster.DowngradingConsistencyRetryPolicy.INSTANCE;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
-/**
- * Created by Jeka on 13/10/2014.
- */
 @Configuration
 @ComponentScan
 @EnableWebMvc
-@PropertySource("file:cassandra.properties")
 public class AppConfig {
-
-    @Value("${contactPoint}") String contactPoint;
-    @Value("${connectionsPerHost}") int connectionsPerHost;
-    @Value("${reconnectionPolicy}") long reconnectionPolicy;
 
     @Bean
     public Cluster cluster() {
-        return Cluster.builder().addContactPoint(contactPoint)
-                .poolingOptions().setCoreConnectionsPerHost(LOCAL, connectionsPerHost).withRetryPolicy(INSTANCE)
-                .withReconnectionPolicy(new Cluster.Builder.ConstantReconnectionPolicy(reconnectionPolicy))
-                .build();
+        return new Cluster(hazelcast());
     }
 
     @Bean
-    public static PropertySourcesPlaceholderConfigurer configurer() {
-        return new PropertySourcesPlaceholderConfigurer();
+    public HazelcastInstance hazelcast() {
+        final InputStream inputStream =
+            AppConfig.class.getClassLoader().getResourceAsStream("hazelcast.xml");
+        final XmlConfigBuilder xmlConfigBuilder = new XmlConfigBuilder(inputStream);
+        xmlConfigBuilder.setProperties(hzProperties());
+        Config config = xmlConfigBuilder.build();
+
+        // to test in-process 2 nodes cluster uncomment following line
+        // Hazelcast.newHazelcastInstance(config);
+        return Hazelcast.newHazelcastInstance(config);
+    }
+
+    @Bean
+    public Properties hzProperties() {
+        PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
+        propertiesFactoryBean.setLocation(new FileSystemResource("hazelcast.properties"));
+        Properties properties = null;
+        try {
+            propertiesFactoryBean.afterPropertiesSet();
+            properties = propertiesFactoryBean.getObject();
+
+        } catch (IOException e) {
+            // not cool !!!
+        }
+        return properties;
     }
 }
