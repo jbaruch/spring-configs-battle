@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.Map;
 
 @Component
-@Scope("prototype")
 public class XmlParser extends ParserBase {
     private XmlMapper xmlParser;
 

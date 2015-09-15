@@ -55,17 +55,8 @@ public class AppConfig {
     }
 
     @Bean
-    @Scope("prototype")
     public Parser parser() {
         return new XmlParser();
     }
 
-    @Bean
-    public ImportController importController() {
-        return new ImportController(cluster()) {
-            @Override public Parser getParser() {
-                return parser();
-            }
-        };
-    }
 }
