@@ -26,11 +26,18 @@
         <constructor-arg name="hazelcastInstance" ref="hzInstance"/>
     </bean>
 
-    <bean id="parser" class="spring.battle.xml.JsonParser" scope="prototype"/>
-
     <bean id="importController" class="spring.battle.xml.ImportController">
         <constructor-arg name="cluster" ref="cluster"/>
-        <lookup-method name="getParser"  bean="parser"/>
+        <lookup-method name="getParser" bean="parser"/>
     </bean>
+
+    <beans profile="JSON">
+        <bean id="parser" class="spring.battle.xml.JsonParser" scope="prototype"/>
+    </beans>
+
+    <beans profile="XML">
+        <bean id="parser" class="spring.battle.xml.XmlParser" scope="prototype"/>
+    </beans>
+
 
 </beans>

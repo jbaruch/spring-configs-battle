@@ -17,8 +17,15 @@ beans {
 
     mvc.'annotation-driven'()
 
-    parser(JsonParser){ bean ->
-        bean.scope = 'prototype'
+    switch (System.getenv('SPRING_PROFILES_ACTIVE')) {
+        case 'MAIN':
+            parser(JsonParser).scope = 'prototype'
+            break
+        case 'FAILOVER':
+            parser(XmlParser).scope = 'prototype'
+            break
+        default:
+            throw new IllegalStateException('can\'t run without a profile')
     }
 
     hazelcastInstance(HazelcastInstanceFactoryBean) {

@@ -6,8 +6,6 @@ import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -16,10 +14,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-@Configuration
-@ComponentScan
 @EnableWebMvc
-public class AppConfig {
+public abstract class AppConfig {
 
     @Bean
     public Cluster cluster() {
@@ -56,9 +52,7 @@ public class AppConfig {
 
     @Bean
     @Scope("prototype")
-    public Parser parser() {
-        return new JsonParser();
-    }
+    public abstract Parser parser();
 
     @Bean
     public ImportController importController() {
