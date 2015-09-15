@@ -17,16 +17,12 @@ beans {
 
     mvc.'annotation-driven'()
 
-    switch (System.getenv('SPRING_PROFILES_ACTIVE')) {
-        case 'MAIN':
-            parser(JsonParser).scope = 'prototype'
-            break
-        case 'FAILOVER':
-            parser(XmlParser).scope = 'prototype'
-            break
-        default:
-            throw new IllegalStateException('can\'t run without a profile')
+    Properties parserProps = new Properties()
+    new File('parser.properties').withInputStream { is ->
+        parserProps.load(is)
     }
+
+    parser(Class.forName("spring.battle.groovy.${parserProps.parserImpl}Parser")).scope = 'prototype'
 
     hazelcastInstance(HazelcastInstanceFactoryBean) {
         hazelcastPropertiesFilename = 'hazelcast.properties'

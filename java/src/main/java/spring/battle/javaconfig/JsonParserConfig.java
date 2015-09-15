@@ -1,10 +1,8 @@
 package spring.battle.javaconfig;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import spring.battle.javaconfig.annotation.Json;
 
-@Configuration
-@Profile("json")
+@Json
 public class JsonParserConfig extends AppConfig {
     @Override
     public Parser parser() {

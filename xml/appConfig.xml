@@ -31,13 +31,6 @@
         <lookup-method name="getParser" bean="parser"/>
     </bean>
 
-    <beans profile="JSON">
-        <bean id="parser" class="spring.battle.xml.JsonParser" scope="prototype"/>
-    </beans>
-
-    <beans profile="XML">
-        <bean id="parser" class="spring.battle.xml.XmlParser" scope="prototype"/>
-    </beans>
-
+    <import resource="file:${parserImpl}ParserConfig.xml"/>
 
 </beans>
