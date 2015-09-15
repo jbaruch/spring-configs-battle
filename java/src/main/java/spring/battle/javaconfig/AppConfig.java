@@ -8,6 +8,7 @@ import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -51,5 +52,20 @@ public class AppConfig {
             // not cool !!!
         }
         return properties;
+    }
+
+    @Bean
+    @Scope("prototype")
+    public Parser parser() {
+        return new XmlParser();
+    }
+
+    @Bean
+    public ImportController importController() {
+        return new ImportController(cluster()) {
+            @Override public Parser getParser() {
+                return parser();
+            }
+        };
     }
 }

@@ -1,4 +1,6 @@
 import com.hazelcast.config.XmlConfigBuilder
+import org.springframework.beans.factory.support.LookupOverride
+import org.springframework.beans.factory.support.MethodOverrides
 import com.hazelcast.core.Hazelcast
 import com.hazelcast.core.HazelcastInstance
 import org.springframework.beans.factory.FactoryBean
@@ -14,7 +16,9 @@ beans {
 
     mvc.'annotation-driven'()
 
-    xmlParser XmlParser
+    parser(XmlParser){bean ->
+        bean.scope = 'prototype'
+    }
 
     hazelcastInstance(HazelcastInstanceFactoryBean) {
         hazelcastPropertiesFilename = 'hazelcast.properties'
@@ -25,7 +29,10 @@ beans {
         bean.destroyMethod = 'shutdown'
     }
 
-    importController ImportController, xmlParser, cluster
+    importController(ImportController, cluster) { bean ->
+        bean.methodOverrides = new MethodOverrides()
+        bean.methodOverrides.addOverride(new LookupOverride('getParser', 'parser'))
+    }
 }
 
 class HazelcastInstanceFactoryBean implements FactoryBean<HazelcastInstance> {

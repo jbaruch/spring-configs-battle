@@ -15,14 +15,12 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  * Created by Jeka on 13/10/2014.
  */
 @RestController
-public class ImportController {
+public abstract class ImportController {
 
-    private Parser parser;
     private Cluster cluster;
 
     @Autowired
-    public ImportController(Parser parser, Cluster cluster) {
-        this.parser = parser;
+    public ImportController(Cluster cluster) {
         this.cluster = cluster;
     }
 
@@ -32,6 +30,7 @@ public class ImportController {
 
         Stream<String> results = Arrays.stream(documents)
                 .map(document -> {
+                    Parser parser = getParser();
                     parser.create();
                     String saveResult = cluster.save(parser.map(document));
                     parser.close();
@@ -40,4 +39,6 @@ public class ImportController {
 
         return results.collect(toList()).toString();
     }
+
+    public abstract Parser getParser();
 }

@@ -1,15 +1,14 @@
 package spring.battle.javaconfig;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Map;
 
-/**
- * Created by Jeka on 13/10/2014.
- */
 @Component
+@Scope("prototype")
 public class XmlParser extends ParserBase {
     private XmlMapper xmlParser;
 

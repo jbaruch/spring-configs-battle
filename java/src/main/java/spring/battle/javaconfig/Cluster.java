@@ -7,9 +7,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-/**
- * Created by Jeka on 13/10/2014.
- */
 public class Cluster {
 
     private static Logger LOG = LoggerFactory.getLogger(Cluster.class);
