@@ -18,10 +18,10 @@ beans {
     mvc.'annotation-driven'()
 
     switch (System.getenv('SPRING_PROFILES_ACTIVE')) {
-        case 'MAIN':
+        case 'JSON':
             parser(JsonParser).scope = 'prototype'
             break
-        case 'FAILOVER':
+        case 'XML':
             parser(XmlParser).scope = 'prototype'
             break
         default:
