@@ -17,7 +17,6 @@ public class JsonParser extends ParserBase {
 
     @Override
     Map<String, String> map(String data) {
-        log.info('Reloaded!')
         map(mapper, data);
     }
 }
