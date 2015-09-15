@@ -6,6 +6,7 @@ import com.hazelcast.core.HazelcastInstance
 import org.springframework.beans.factory.FactoryBean
 import spring.battle.groovy.Cluster
 import spring.battle.groovy.ImportController
+import spring.battle.groovy.JsonParser
 import spring.battle.groovy.XmlParser
 
 beans {
@@ -16,7 +17,7 @@ beans {
 
     mvc.'annotation-driven'()
 
-    parser(XmlParser){bean ->
+    parser(JsonParser){ bean ->
         bean.scope = 'prototype'
     }
 

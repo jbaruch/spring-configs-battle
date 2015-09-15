@@ -57,7 +57,7 @@ public class AppConfig {
     @Bean
     @Scope("prototype")
     public Parser parser() {
-        return new XmlParser();
+        return new JsonParser();
     }
 
     @Bean
