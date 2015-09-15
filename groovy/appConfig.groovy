@@ -16,23 +16,16 @@ beans {
 
     mvc.'annotation-driven'()
 
-    parser(XmlParser){bean ->
-        bean.scope = 'prototype'
-    }
+    parser XmlParser
 
     hazelcastInstance(HazelcastInstanceFactoryBean) {
         hazelcastPropertiesFilename = 'hazelcast.properties'
         hazelcastConfigFilename = 'hazelcast.xml'
     }
 
-    cluster(Cluster, hazelcastInstance) {bean ->
-        bean.destroyMethod = 'shutdown'
-    }
+    cluster(Cluster, hazelcastInstance).destroyMethod = 'shutdown'
 
-    importController(ImportController, cluster) { bean ->
-        bean.methodOverrides = new MethodOverrides()
-        bean.methodOverrides.addOverride(new LookupOverride('getParser', 'parser'))
-    }
+    importController ImportController, parser, cluster
 }
 
 class HazelcastInstanceFactoryBean implements FactoryBean<HazelcastInstance> {
@@ -49,7 +42,7 @@ class HazelcastInstanceFactoryBean implements FactoryBean<HazelcastInstance> {
         }
         def instance
         this.getClass().getResource(hazelcastConfigFilename).withInputStream {
-            XmlConfigBuilder  xmlConfigBuilder = new XmlConfigBuilder(it)
+            XmlConfigBuilder xmlConfigBuilder = new XmlConfigBuilder(it)
             xmlConfigBuilder.properties = hzProperties
             instance = Hazelcast.newHazelcastInstance(xmlConfigBuilder.build())
         }

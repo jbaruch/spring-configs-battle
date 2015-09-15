@@ -15,12 +15,14 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  * @since 15/09/2015
  */
 @RestController
-public abstract class ImportController {
+public class ImportController {
 
     private Cluster cluster;
+    private Parser parser;
 
-    public ImportController(Cluster cluster) {
+    public ImportController(Parser parser, Cluster cluster) {
         this.cluster = cluster;
+        this.parser = parser;
     }
 
     @RequestMapping(value = "/importData", method = POST, produces = "text/plain")
@@ -29,7 +31,6 @@ public abstract class ImportController {
 
         Stream<String> results = Arrays.stream(documents)
                 .map(document -> {
-                    Parser parser = getParser();
                     parser.create();
                     String saveResult = cluster.save(parser.map(document));
                     parser.close();
@@ -38,6 +39,4 @@ public abstract class ImportController {
 
         return results.collect(toList()).toString();
     }
-
-    public abstract Parser getParser();
 }
