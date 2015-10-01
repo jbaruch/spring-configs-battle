@@ -2,15 +2,16 @@ package spring.battle.javaconfig;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Map;
 
 @Component
-@Scope("prototype")
+@Scope(value = "prototype")
 public class XmlParser extends ParserBase {
-    private XmlMapper xmlParser;
+     private XmlMapper xmlParser;
 
     public XmlParser() {
         xmlParser = new XmlMapper();

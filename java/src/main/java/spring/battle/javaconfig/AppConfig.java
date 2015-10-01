@@ -4,7 +4,9 @@ import com.hazelcast.config.Config;
 import com.hazelcast.config.XmlConfigBuilder;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +23,19 @@ import java.util.Properties;
 @EnableWebMvc
 public class AppConfig {
 
+    @Autowired
+    private ApplicationContext context;
+
+    @Bean
+    public ImportController importController() {
+        return new ImportController(cluster()) {
+            @Override
+            public Parser getParser() {
+                return context.getBean(Parser.class);
+            }
+        };
+    }
+
     @Bean
     public Cluster cluster() {
         return new Cluster(hazelcast());
@@ -33,9 +48,6 @@ public class AppConfig {
         final XmlConfigBuilder xmlConfigBuilder = new XmlConfigBuilder(inputStream);
         xmlConfigBuilder.setProperties(hzProperties());
         Config config = xmlConfigBuilder.build();
-
-        // to test in-process 2 nodes cluster uncomment following line
-        // Hazelcast.newHazelcastInstance(config);
         return Hazelcast.newHazelcastInstance(config);
     }
 
@@ -54,18 +66,4 @@ public class AppConfig {
         return properties;
     }
 
-    @Bean
-    @Scope("prototype")
-    public Parser parser() {
-        return new XmlParser();
-    }
-
-    @Bean
-    public ImportController importController() {
-        return new ImportController(cluster()) {
-            @Override public Parser getParser() {
-                return parser();
-            }
-        };
-    }
 }
