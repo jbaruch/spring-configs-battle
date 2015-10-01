@@ -34,8 +34,7 @@ public class AppConfig {
         xmlConfigBuilder.setProperties(hzProperties());
         Config config = xmlConfigBuilder.build();
 
-        // to test in-process 2 nodes cluster uncomment following line
-        // Hazelcast.newHazelcastInstance(config);
+
         return Hazelcast.newHazelcastInstance(config);
     }
 
@@ -52,11 +51,6 @@ public class AppConfig {
             // not cool !!!
         }
         return properties;
-    }
-
-    @Bean
-    public Parser parser() {
-        return new XmlParser();
     }
 
 }
